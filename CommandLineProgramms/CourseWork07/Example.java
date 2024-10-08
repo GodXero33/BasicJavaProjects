@@ -35,7 +35,7 @@ class Example {
 	// final public static 
 
 	public static void main (String[] args) {
-		// insertSampleData();
+		insertSampleData();
 		goToPage("home");
 	}
 
@@ -65,65 +65,27 @@ class Example {
 	// ---------------- Other helper methods ----------------
 
 	public static void insertSampleData () {
-		idList = pushToArray(idList, 1);
-		idList = pushToArray(idList, 2);
-		idList = pushToArray(idList, 3);
-		idList = pushToArray(idList, 4);
-		idList = pushToArray(idList, 5);
-		idList = pushToArray(idList, 6);
-		idList = pushToArray(idList, 7);
-		idList = pushToArray(idList, 8);
+		final int[] idData = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+		final int[] statusData = new int[15];
+		final String[] phoneData = { "0776198410", "0776198410", "0703859852", "0703859852", "0703859852", "0769854321", "0775544336", "0712002200", "0770110488", "0770110488", "0728045217", "0728045217", "0728045217", "0776912069", "0776912069" };
+		final int[] sizesData = { 0, 2, 2, 3, 4, 4, 1, 2, 2, 4, 0, 0, 2, 2, 5 };
+		final int[] qtyData = { 3, 3, 6, 4, 1, 1, 2, 3, 3, 3, 1, 2, 1, 3, 4 };
+		final double[] amountData = { 1800, 2700, 5400, 4400, 1200, 1200, 1600, 2700, 2700, 3300, 600, 1200, 900, 2700, 4800 };
 
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-		statusList = pushToArray(statusList, 0);
-
-		phoneList = pushToArray(phoneList, "0776198410");
-		phoneList = pushToArray(phoneList, "0776198410");
-		phoneList = pushToArray(phoneList, "0703859852");
-		phoneList = pushToArray(phoneList, "0703859852");
-		phoneList = pushToArray(phoneList, "0703859852");
-		phoneList = pushToArray(phoneList, "0769854321");
-		phoneList = pushToArray(phoneList, "0775544336");
-		phoneList = pushToArray(phoneList, "0712002200");
-
-		sizesList = pushToArray(sizesList, 0);
-		sizesList = pushToArray(sizesList, 2);
-		sizesList = pushToArray(sizesList, 2);
-		sizesList = pushToArray(sizesList, 4);
-		sizesList = pushToArray(sizesList, 5);
-		sizesList = pushToArray(sizesList, 5);
-		sizesList = pushToArray(sizesList, 1);
-		sizesList = pushToArray(sizesList, 2);
-
-		qtyList = pushToArray(qtyList, 3);
-		qtyList = pushToArray(qtyList, 3);
-		qtyList = pushToArray(qtyList, 6);
-		qtyList = pushToArray(qtyList, 4);
-		qtyList = pushToArray(qtyList, 1);
-		qtyList = pushToArray(qtyList, 1);
-		qtyList = pushToArray(qtyList, 2);
-		qtyList = pushToArray(qtyList, 3);
-
-		amountList = pushToArray(amountList, 1800.0);
-		amountList = pushToArray(amountList, 2700.0);
-		amountList = pushToArray(amountList, 5400.0);
-		amountList = pushToArray(amountList, 4400.0);
-		amountList = pushToArray(amountList, 1200.0);
-		amountList = pushToArray(amountList, 1200.0);
-		amountList = pushToArray(amountList, 1600.0);
-		amountList = pushToArray(amountList, 2700.0);
-
-		curOrderID += 8;
+		for (int i = 0; i < idData.length; i++) {
+			idList = pushToArray(idList, idData[i]);
+			statusList = pushToArray(statusList, statusData[i]);
+			phoneList = pushToArray(phoneList, phoneData[i]);
+			sizesList = pushToArray(sizesList, sizesData[i]);
+			qtyList = pushToArray(qtyList, qtyData[i]);
+			amountList = pushToArray(amountList, amountData[i]);
+		}
+		
+		curOrderID += idData.length;
 	}
 
 	public static String generateOrderID (int num) {
-		final int len = 5;
+		/* final int len = 5;
 		final char fillChar = '0';
 		String str = num + "";
 
@@ -136,7 +98,8 @@ class Example {
 			pad += fillChar;
 		}
 
-		return "ODR#" + pad + str;
+		return "ODR#" + pad + str; */
+		return String.format("ODR#%05d", num);
 	}
 
 	
@@ -578,9 +541,9 @@ class Example {
 		}
 
 		for (int i = 0; i < 10; i++) {
-			char character = phone.charAt(i);
+			char sym = phone.charAt(i);
 
-			if (character < 48 || character > 57) return getValidPhoneNumber(false);
+			if (sym < 48 || sym > 57) return getValidPhoneNumber(false);
 		}
 
 		if (phone.charAt(0) != '0') return getValidPhoneNumber(false);
@@ -624,18 +587,14 @@ class Example {
 		if (!id.substring(0, 4).equals("ODR#")) return -1;
 
 		id = id.substring(4);
-
-		int startIndex = -1;
 		
 		for (int i = 0; i < len; i++) {
-			if (id.charAt(i) != '0') {
-				startIndex = i;
-			}
+			char sym = id.charAt(i);
+
+			if (sym < 48 || sym > 57) return -1;
 		}
 
-		if (startIndex == -1) return -1;
-
-		return Integer.parseInt(id.substring(startIndex));
+		return Integer.parseInt(id);
 	}
 
 	public static int getValidOrderID () {
@@ -644,7 +603,7 @@ class Example {
 
 		int id = convertOrderIDStr2Int(searchId);
 
-		if (findIndexFromArray(idList, id) == -1) id = -1; 
+		if (id != -1 && findIndexFromArray(idList, id) == -1) id = -1; 
 
 		if (id == -1) {
 			System.out.println("\n" + spacing + "          Invalid id..\n");
